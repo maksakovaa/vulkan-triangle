@@ -116,4 +116,6 @@ private:    //Objects
     VkExtent2D swapChainExtent;
     //ImageViews
     std::vector<VkImageView> swapChainImageViews;
+
+    VkPipelineLayout pipelineLayout;
 };
