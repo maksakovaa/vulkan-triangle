@@ -11,6 +11,7 @@
 #include <set>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -92,6 +93,10 @@ private:    //Methods
     void createSwapChain();
     //Image views
     void createImageViews();
+    //Graphics pipeline
+    void createGraphicsPipeline();
+    static std::vector<char> readFile(const std::string& filename);
+    VkShaderModule createShaderModule(const std::vector<char>& code);
 private:    //Objects
     GLFWwindow* window;
 
