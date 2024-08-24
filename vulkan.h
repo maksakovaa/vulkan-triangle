@@ -90,6 +90,8 @@ private:    //Methods
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
+    //Image views
+    void createImageViews();
 private:    //Objects
     GLFWwindow* window;
 
@@ -102,9 +104,11 @@ private:    //Objects
 
     VkQueue graphicsQueue;
     VkQueue presentQueue;
-
+    //Swap chain
     VkSwapchainKHR swapChain;
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
+    //ImageViews
+    std::vector<VkImageView> swapChainImageViews;
 };
