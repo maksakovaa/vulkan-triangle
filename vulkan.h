@@ -101,6 +101,10 @@ private:    //Methods
     void createRenderPass();
     //Framebuffers
     void createFrameBuffers();
+    //Command buffers
+    void createCommandPool();
+    void createCommandBuffer();
+    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 private:    //Objects
     GLFWwindow* window;
 
@@ -127,4 +131,7 @@ private:    //Objects
 
     //Framebuffers
     std::vector<VkFramebuffer> swapChainFramebuffers;
+    //Command buffers
+    VkCommandPool commandPool;
+    VkCommandBuffer commandBuffer;
 };
