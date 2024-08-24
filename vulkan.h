@@ -97,6 +97,8 @@ private:    //Methods
     void createGraphicsPipeline();
     static std::vector<char> readFile(const std::string& filename);
     VkShaderModule createShaderModule(const std::vector<char>& code);
+    //Render passes
+    void createRenderPass();
 private:    //Objects
     GLFWwindow* window;
 
@@ -117,5 +119,6 @@ private:    //Objects
     //ImageViews
     std::vector<VkImageView> swapChainImageViews;
 
+    VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
 };
