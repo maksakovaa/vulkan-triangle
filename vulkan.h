@@ -121,4 +121,5 @@ private:    //Objects
 
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
+    VkPipeline graphicsPipeline;
 };
