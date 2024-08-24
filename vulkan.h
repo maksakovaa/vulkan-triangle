@@ -99,6 +99,8 @@ private:    //Methods
     VkShaderModule createShaderModule(const std::vector<char>& code);
     //Render passes
     void createRenderPass();
+    //Framebuffers
+    void createFrameBuffers();
 private:    //Objects
     GLFWwindow* window;
 
@@ -122,4 +124,7 @@ private:    //Objects
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
     VkPipeline graphicsPipeline;
+
+    //Framebuffers
+    std::vector<VkFramebuffer> swapChainFramebuffers;
 };
