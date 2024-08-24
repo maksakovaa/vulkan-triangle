@@ -105,6 +105,9 @@ private:    //Methods
     void createCommandPool();
     void createCommandBuffer();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+    //Rendering
+    void drawFrame();
+    void createSyncObjects();
 private:    //Objects
     GLFWwindow* window;
 
@@ -134,4 +137,9 @@ private:    //Objects
     //Command buffers
     VkCommandPool commandPool;
     VkCommandBuffer commandBuffer;
+
+    //Rendering
+    VkSemaphore imageAvailableSemaphore;
+    VkSemaphore renderFinishedSemaphore;
+    VkFence inFlightFence;
 };
