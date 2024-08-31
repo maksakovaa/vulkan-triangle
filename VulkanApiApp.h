@@ -88,9 +88,15 @@ private:    //Methods
     void copyBufferToImage(VkBuffer, VkImage, uint32_t, uint32_t);
 
     void createTextureImageView();
-    VkImageView createImageView(VkImage image, VkFormat format);
+    VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 
     void createTextureSampler();
+
+    //Depth image and view
+    void createDepthResources();
+    VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+    VkFormat findDepthFormat();
+    bool hasStencilComponent(VkFormat format);
 private:    //Objects
     GLFWwindow* window;
 
@@ -147,5 +153,10 @@ private:    //Objects
     VkDeviceMemory textureImageMemory;
     VkImageView textureImageView;
     VkSampler textureSampler;
+
+    //Depth image and view
+    VkImage depthImage;
+    VkDeviceMemory depthImageMemory;
+    VkImageView depthImageView;
 };
 #endif
