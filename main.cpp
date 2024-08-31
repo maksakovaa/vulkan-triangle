@@ -1,8 +1,8 @@
-#include "HelloTriangleApp.h"
+#include "VulkanApiApp.h"
 
 int main()
 {
-    HelloTriangleApp app;
+    VulkanApiApp app;
     try
     {
         app.run();

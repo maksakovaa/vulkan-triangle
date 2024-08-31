@@ -1,6 +1,6 @@
-#include "HelloTriangleApp.h"
+#include "VulkanApiApp.h"
 
-bool HelloTriangleApp::isDeviceSuitable(VkPhysicalDevice device)
+bool VulkanApiApp::isDeviceSuitable(VkPhysicalDevice device)
 {
     QueueFamilyIndices indices = findQueueFamilies(device);
     bool extensionsSupported = checkDeviceExtensionsSupport(device);
@@ -10,11 +10,14 @@ bool HelloTriangleApp::isDeviceSuitable(VkPhysicalDevice device)
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(device);
         swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentMode.empty();
     }
+
+    VkPhysicalDeviceFeatures supportedFeatures;
+    vkGetPhysicalDeviceFeatures(device, &supportedFeatures);
     
-    return indices.isComplete() && extensionsSupported && swapChainAdequate;
+    return indices.isComplete() && extensionsSupported && swapChainAdequate && supportedFeatures.samplerAnisotropy;
 }
 
-bool HelloTriangleApp::checkDeviceExtensionsSupport(VkPhysicalDevice device)
+bool VulkanApiApp::checkDeviceExtensionsSupport(VkPhysicalDevice device)
 {
     uint32_t extensionsCount;
     vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionsCount, nullptr);
@@ -31,7 +34,7 @@ bool HelloTriangleApp::checkDeviceExtensionsSupport(VkPhysicalDevice device)
     return requiredExtensions.empty();
 }
 
-void HelloTriangleApp::checkExtensions()
+void VulkanApiApp::checkExtensions()
 {
     uint32_t extensionsCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionsCount, nullptr);
@@ -44,7 +47,7 @@ void HelloTriangleApp::checkExtensions()
     }       
 }
 
-bool HelloTriangleApp::checkValidationLayerSupport()
+bool VulkanApiApp::checkValidationLayerSupport()
 {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
@@ -74,7 +77,7 @@ bool HelloTriangleApp::checkValidationLayerSupport()
     return true;
 }
 
-std::vector<const char*> HelloTriangleApp::getRequiredExtensions()
+std::vector<const char*> VulkanApiApp::getRequiredExtensions()
 {
     uint32_t glfwExtensionsCount = 0;
     const char** glfwExtensions;
@@ -88,7 +91,7 @@ std::vector<const char*> HelloTriangleApp::getRequiredExtensions()
     return extensions;
 }
 
-VKAPI_ATTR VkBool32 VKAPI_CALL HelloTriangleApp::debugCallback(
+VKAPI_ATTR VkBool32 VKAPI_CALL VulkanApiApp::debugCallback(
     VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
     VkDebugUtilsMessageTypeFlagsEXT messageType,
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
@@ -99,7 +102,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL HelloTriangleApp::debugCallback(
     return VK_FALSE;
 }
 
-void HelloTriangleApp::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo)
+void VulkanApiApp::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo)
 {
     createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -108,7 +111,7 @@ void HelloTriangleApp::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCre
     createInfo.pfnUserCallback = debugCallback;
 }
 
-void HelloTriangleApp::setupDebugMessenger()
+void VulkanApiApp::setupDebugMessenger()
 {
     if(!enableValidationLayers) return;
 
@@ -125,7 +128,7 @@ void HelloTriangleApp::setupDebugMessenger()
     }
 }
 
-VkResult HelloTriangleApp::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkDebugUtilsMessengerEXT *pDebugMessenger)
+VkResult VulkanApiApp::CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkDebugUtilsMessengerEXT *pDebugMessenger)
 {
     auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
     if (func != nullptr)
@@ -138,7 +141,7 @@ VkResult HelloTriangleApp::CreateDebugUtilsMessengerEXT(VkInstance instance, con
     }
 }
 
-void HelloTriangleApp::DestroyDebugUtilsMessengerEXT(
+void VulkanApiApp::DestroyDebugUtilsMessengerEXT(
     VkInstance instance,
     VkDebugUtilsMessengerEXT debugMessenger,
     const VkAllocationCallbacks *pAllocator)

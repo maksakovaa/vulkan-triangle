@@ -1,6 +1,9 @@
+#ifndef VULKAN_API_APP
+#define VULKAN_API_APP
+
 #include "constants.h"
 
-class HelloTriangleApp
+class VulkanApiApp
 {
 public:
     void run();
@@ -20,24 +23,19 @@ private:    //Methods
     bool checkValidationLayerSupport();
     std::vector<const char*> getRequiredExtensions();
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
-        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT messageType,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void* pUserData
-    );
+        VkDebugUtilsMessageSeverityFlagBitsEXT,
+        VkDebugUtilsMessageTypeFlagsEXT,
+        const VkDebugUtilsMessengerCallbackDataEXT*,
+        void*);
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
     void setupDebugMessenger();
     VkResult CreateDebugUtilsMessengerEXT(
-        VkInstance instance,
-        const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
-        const VkAllocationCallbacks* pAllocator,
-        VkDebugUtilsMessengerEXT* pDebugMessenger
-    );
-    static void DestroyDebugUtilsMessengerEXT(
-        VkInstance instance,
-        VkDebugUtilsMessengerEXT debugMessenger,
-        const VkAllocationCallbacks* pAllocator
-    );
+        VkInstance,
+        const VkDebugUtilsMessengerCreateInfoEXT*,
+        const VkAllocationCallbacks*,
+        VkDebugUtilsMessengerEXT*);
+    static void DestroyDebugUtilsMessengerEXT(VkInstance, VkDebugUtilsMessengerEXT,
+        const VkAllocationCallbacks*);
     //Swap chain
     bool checkDeviceExtensionsSupport(VkPhysicalDevice device);
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
@@ -68,7 +66,8 @@ private:    //Methods
     //Vertex buffer
     void createVertexBuffer();
     uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
-    void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+    void createBuffer(VkDeviceSize, VkBufferUsageFlags, VkMemoryPropertyFlags,
+        VkBuffer&, VkDeviceMemory&);
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     //Index buffer
     void createIndexBuffer();
@@ -78,6 +77,20 @@ private:    //Methods
     void updateUniformBuffer(uint32_t currentImage);
     void createDescriptorPool();
     void createDescriptorSets();
+
+    //Texture mapping
+    void createTextureImage();
+    void createImage(uint32_t, uint32_t, VkFormat, VkImageTiling, VkImageUsageFlags, 
+        VkMemoryPropertyFlags, VkImage&, VkDeviceMemory&);
+    VkCommandBuffer beginSingleTimeCommands();
+    void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+    void transitionImageLayout(VkImage, VkFormat, VkImageLayout, VkImageLayout);
+    void copyBufferToImage(VkBuffer, VkImage, uint32_t, uint32_t);
+
+    void createTextureImageView();
+    VkImageView createImageView(VkImage image, VkFormat format);
+
+    void createTextureSampler();
 private:    //Objects
     GLFWwindow* window;
 
@@ -128,4 +141,11 @@ private:    //Objects
 
     VkDescriptorPool descriptorPool;
     std::vector<VkDescriptorSet> descriptorSets;
+
+    //Texture mapping
+    VkImage textureImage;
+    VkDeviceMemory textureImageMemory;
+    VkImageView textureImageView;
+    VkSampler textureSampler;
 };
+#endif
